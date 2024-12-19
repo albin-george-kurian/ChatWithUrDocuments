@@ -1,0 +1,10 @@
+streamlit
+langchain
+langchain-community
+FAISS
+PyPDF2
+pypdf
+dotenv
+fastembed
+faiss-cpu
+faiss-gpu

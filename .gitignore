@@ -1,0 +1,12 @@
+.env
+# Node.js
+node_modules/
+
+# Python
+*.pyc
+__pycache__/
+
+# IDEs
+.vscode/
+
+
