@@ -1,7 +1,6 @@
 streamlit
 langchain
 langchain-community
-FAISS
 PyPDF2
 pypdf
 dotenv
