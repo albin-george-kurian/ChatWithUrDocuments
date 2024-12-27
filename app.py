@@ -1,5 +1,5 @@
 import streamlit as st
-from langchain_community.document_loaders import PyPDFLoader
+from PyPDF2 import PdfReader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain_community.embeddings import FastEmbedEmbeddings
 from langchain_community.vectorstores import FAISS
@@ -7,8 +7,7 @@ from langchain.memory import ConversationBufferMemory
 from langchain.chains import ConversationalRetrievalChain
 from langchain.prompts import PromptTemplate
 from langchain_groq import ChatGroq
-from dotenv import load_dotenv
-import os
+from io import BytesIO
 
 # Title and Description
 st.title("Chat with Your Document")
@@ -19,18 +18,23 @@ uploaded_file = st.file_uploader("Upload a PDF file", type="pdf")
 
 if uploaded_file is not None:
     try:
-        # Save the uploaded file temporarily
-        with open("temp.pdf", "wb") as f:
-            f.write(uploaded_file.read())
+        # Read the uploaded file into memory
+        pdf_bytes = uploaded_file.read()
+        pdf_file = BytesIO(pdf_bytes)
 
-        # Load the PDF file
+        # Extract text from PDF using PyPDF2
         st.write("Processing your document...")
-        loader = PyPDFLoader("temp.pdf")
-        data = loader.load()
+        reader = PdfReader(pdf_file)
+        raw_text = ""
+        for page in reader.pages:
+            raw_text += page.extract_text()
+
+        if not raw_text.strip():
+            raise ValueError("The PDF does not contain extractable text.")
 
         # Split the text into chunks
         text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=100)
-        text_chunks = text_splitter.split_documents(data)
+        text_chunks = text_splitter.create_documents([raw_text])
 
         # Generate embeddings
         st.write("Generating embeddings...")
