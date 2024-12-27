@@ -1,6 +1,4 @@
 .env
-# Node.js
-node_modules/
 
 # Python
 *.pyc
