@@ -4,6 +4,7 @@ langchain-community
 PyPDF2
 pypdf
 dotenv
+python-dotenv
 fastembed
 faiss-cpu
 faiss-gpu
