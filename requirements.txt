@@ -6,3 +6,4 @@ pypdf
 python-dotenv
 fastembed
 faiss-cpu
+langchain_groq==0.1.0
