@@ -1,6 +1,6 @@
 .env
-# Node.js
-node_modules/
+.streamlit/secrets.toml
+
 
 # Python
 *.pyc
