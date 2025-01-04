@@ -9,6 +9,15 @@ from langchain.prompts import PromptTemplate
 from langchain_groq import ChatGroq
 from io import BytesIO
 
+# Retrieve API key from Streamlit secrets
+API_KEY = st.secrets["API_KEY"]
+
+# Define headers for any API that requires authorization
+headers = {
+    "authorization": API_KEY,
+    "content-type": "application/json"
+}
+
 # Title and Description
 st.title("Chat with Your Document")
 st.write("Upload a PDF file to start interacting with its content. Ask questions and get detailed answers.")
@@ -38,7 +47,7 @@ if uploaded_file is not None:
 
         # Generate embeddings
         st.write("Generating embeddings...")
-        embeddings = FastEmbedEmbeddings(model_name="BAAI/bge-small-en-v1.5")
+        embeddings = FastEmbedEmbeddings(model_name="BAAI/bge-small-en-v1.5", headers=headers)
 
         # Create a FAISS vector store
         db = FAISS.from_documents(text_chunks, embeddings)
@@ -47,7 +56,7 @@ if uploaded_file is not None:
         retriever = db.as_retriever(search_type="similarity", search_kwargs={"k": 4})
 
         # Set up the LLM (Groq in this case)
-        llm = ChatGroq(model_name='llama3-70b-8192')
+        llm = ChatGroq(model_name='llama3-70b-8192', headers=headers)
 
         # Set up memory for conversation history
         memory = ConversationBufferMemory(memory_key='chat_history', return_messages=False)
