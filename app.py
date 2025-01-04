@@ -9,12 +9,10 @@ from langchain.prompts import PromptTemplate
 from langchain_groq import ChatGroq
 from io import BytesIO
 
-# Retrieve API key from Streamlit secrets
-API_KEY = st.secrets["API_KEY"]
 
 # Define headers for any API that requires authorization
 headers = {
-    "authorization": API_KEY,
+    "authorization": st.secrets["API_KEY"],
     "content-type": "application/json"
 }
 
@@ -56,7 +54,7 @@ if uploaded_file is not None:
         retriever = db.as_retriever(search_type="similarity", search_kwargs={"k": 4})
 
         # Set up the LLM (Groq in this case)
-        llm = ChatGroq(model_name='llama3-70b-8192', headers=headers)
+        llm = ChatGroq(model_name='llama3-70b-8192')
 
         # Set up memory for conversation history
         memory = ConversationBufferMemory(memory_key='chat_history', return_messages=False)
@@ -92,4 +90,4 @@ else:
 
 # Clear button to reset the interface
 if st.button("Clear Chat"):
-    st.experimental_rerun()
+    st.rerun()
