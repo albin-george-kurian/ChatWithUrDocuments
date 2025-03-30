@@ -5,3 +5,4 @@ PyPDF2==1.26.0
 python-dotenv==0.20.0
 fastembed==0.1.0
 faiss-cpu==1.7.2
+pip==25.0.1
